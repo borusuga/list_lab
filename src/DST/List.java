@@ -134,8 +134,9 @@ public class List {
         Node tmp = this.head;
         while (tmp != null) {
             if (tmp.index == index) {
+                Object old_val = tmp.obj;
                 tmp.obj = obj;
-                return obj;
+                return old_val;
             }
         }
         return null;
