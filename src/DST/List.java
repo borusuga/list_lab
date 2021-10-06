@@ -24,12 +24,12 @@ public class List {
      */
     private class Node {
         Object obj;
-        int index;
+        // int index;
         Node next = null;
 
         public Node(Object obj, int index) {
             this.obj = obj;
-            this.index = index;
+            // this.index = index;
         }
     }
 
@@ -67,25 +67,26 @@ public class List {
             Node node = new Node(obj, 0);
             node.next = this.head;
             this.head = node;
-            Node tmp = node.next;
-            while (tmp != null) {
-                tmp.index++;
-                tmp = tmp.next;
-            }
+//            Node tmp = node.next;
+//            while (tmp != null) {
+//                tmp.index++;
+//                tmp = tmp.next;
+//            }
             this.size++;
         } else if (index >= this.size) {
             add(obj);
         } else {
             Node node = new Node(obj, index);
             Node tmp = head;
-            while (tmp.next.index != index && tmp != this.tail) tmp = tmp.next;
+            for (int i = 0; i < index - 1 && tmp != this.tail; ++i) tmp = tmp.next;
+//            while (tmp.next.index != index && tmp != this.tail) tmp = tmp.next;
             node.next = tmp.next;
             tmp.next = node;
             tmp = node.next;
-            while (tmp != null) {
-                tmp.index++;
-                tmp = tmp.next;
-            }
+//            while (tmp != null) {
+//                tmp.index++;
+//                tmp = tmp.next;
+//            }
             this.size++;
         }
     }
@@ -93,9 +94,10 @@ public class List {
     public Object get(int index) {
         if (index < 0 || index >= this.size || this.size == 0) return null;
         Node tmp = this.head;
-        while (tmp.index != index) {
-            tmp = tmp.next;
-        }
+        for (int i = 0; i < index ; ++i) tmp = tmp.next;
+//        while (tmp.index != index) {
+//            tmp = tmp.next;
+//        }
         return tmp.obj;
     }
 
@@ -110,20 +112,21 @@ public class List {
         } else {
             Node tmp = head;
             Object val = null;
-            if (this.head.index == index) {
+            if (index == 0) {
                 val = this.head.obj;
                 this.head = this.head.next;
             } else {
-                while (tmp.next.index != index && tmp != this.tail)
-                    tmp = tmp.next;
+                for (int i = 0; i < index && tmp != this.tail; ++i) tmp = tmp.next;
+//                while (tmp.next.index != index && tmp != this.tail)
+//                    tmp = tmp.next;
                 val = tmp.next.obj;
                 tmp.next = tmp.next.next;
                 tmp =  tmp.next;
             }
-            while (tmp != null) {
-                tmp.index--;
-                tmp = tmp.next;
-            }
+//            while (tmp != null) {
+//                tmp.index--;
+//                tmp = tmp.next;
+//            }
             size--;
             return val;
         }
@@ -132,14 +135,18 @@ public class List {
     public Object set(Object obj, int index) {
         if (index < 0 || index >= this.size) return null;
         Node tmp = this.head;
-        while (tmp != null) {
-            if (tmp.index == index) {
-                Object old_val = tmp.obj;
-                tmp.obj = obj;
-                return old_val;
-            }
-        }
-        return null;
+        for (int i = 0; i < index - 1; ++i) tmp = tmp.next;
+        Object old_val = tmp.obj;
+        tmp.obj = obj;
+        return old_val;
+//        while (tmp != null) {
+//            if (tmp.index == index) {
+//                Object old_val = tmp.obj;
+//                tmp.obj = obj;
+//                return old_val;
+//            }
+//        }
+//        return null;
     }
 
     public boolean contains(Object obj) {
@@ -153,9 +160,11 @@ public class List {
 
     public int indexOf(Object obj) {
         Node tmp = this.head;
+        int i = 0;
         while (tmp != null) {
-            if (tmp.obj == obj) return tmp.index;
+            if (tmp.obj == obj) return i;
             tmp = tmp.next;
+            ++i;
         }
         return -1;
     }
